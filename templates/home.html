@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block content %}{% load static %}
+
+<div class="d-flex flex-wrap px-5 pt-3 align-items-center">
+
+    <div class="col-6 px-5">
+        <h1>Welcome to Car Store</h1>
+        <p>Here at Mike’s Car Store, we’re always happy to give back to folks in need from our community of Louisville,
+            KY. One of
+            the ways we’ve pledged to do so is with our Keys 2 Empower initiative, where we give away a free car to
+            someone in need
+            of reliable transportation..</p>
+    </div>
+    <div class="col-6 ">
+        <img src="{% static 'car.jpeg' %}" />
+    </div>
+</div>
+
+<div class="">
+    <div class="d-flex m-5 justify-content-center align-items-center gap-4 ">
+        <h4>Filter Your Car {{data | length}}:</h4>
+        <a href="{%url 'homepage'%}" class="text-decoration-none m-atuo">All</a>
+        {% for cat in category %}
+        <div class="form-check">
+            <input class="form-check-input d-none" type="radio" name="category" id="{{ cat.id }}" />
+            <label class="form-check-label hidd" for="{{ cat.id }}">
+                <a class="text-decoration-none" href="{% url 'category_wish_post' cat.slug %}">
+                    {{ cat.name }}
+
+            </label>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class=" p-3">
+        <div class="mt-5 d-flex flex-wrap justify-content-center gap-2 p-3">
+            {% for post in data %}
+            <div class="col-sm-3">
+                <div class=" mx-2">
+                    <div class="">
+                        <img class="card-img-top" src={{post.image.url}} alt="">
+                        <h5 class="card-title">{{post.title}}</h5>
+                        <p class="card-text">{{post.content|truncatewords:10}}</p>
+                        <p>{{post.author.name}}</p>
+                        <p>
+                            category: {% for cat in post.categorie.all %}
+                            <button class="btn btn-info btn-sm mt-2">{{cat.name}}</button>
+                            {% endfor %}
+                        </p>
+                        <p>Price: {{post.Price}} $</p>
+                        <button><a href="{% url 'details_post' post.id%}" class="text-decoration-none text-dark">See
+                                Details</a></button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
